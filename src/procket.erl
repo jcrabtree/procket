@@ -206,7 +206,7 @@ fdget(Socket) ->
 
 make_args(Port, Options) ->
     Args = reorder_args(Port, Options),
-    proplists:get_value(progname, Options, "sudo " ++ progname()) ++ " " ++
+    proplists:get_value(progname, Options, progname()) ++ " " ++
     string:join([ get_switch(Arg) || Arg <- Args ], " ") ++
     " > /dev/null 2>&1; printf $?".
 
