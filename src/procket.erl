@@ -46,6 +46,7 @@
         bind/2,
         ioctl/3,
         setsockopt/4,
+        getsockname/2,
 
         alloc/1,
         buf/1,
@@ -140,6 +141,9 @@ writev(_,_) ->
     erlang:error(not_implemented).
 
 setsockopt(_,_,_,_) ->
+    erlang:error(not_implemented).
+
+getsockname(_,_) ->
     erlang:error(not_implemented).
 
 errno_id(_) ->
@@ -304,6 +308,7 @@ family(inet6) ->
         {unix, darwin} -> 30;
         {unix, freebsd} -> 28
     end;
+family(netlink) -> 16;
 family(packet) -> 17;
 family(Proto) when Proto == local; Proto == unix; Proto == file -> 1;
 
@@ -315,6 +320,7 @@ family(10) ->
         {unix, linux} -> inet6;
         {unix, _} -> ccitt
     end;
+family(16) -> netlink;
 family(17) ->
     case os:type() of
         {unix, linux} -> packet;
@@ -350,14 +356,14 @@ protocol(ip) -> 0;
 protocol(icmp) -> 1;
 protocol(tcp) -> 6;
 protocol(udp) -> 17;
-protocol(icmp6) -> 58;
+protocol('ipv6-icmp') -> 58;
 protocol(raw) -> 255;
 
 protocol(0) -> ip;
 protocol(1) -> icmp;
 protocol(6) -> tcp;
 protocol(17) -> udp;
-protocol(58) -> icmp6;
+protocol(58) -> 'ipv6-icmp';
 protocol(255) -> raw.
 
 maybe_atom(_Type, Value) when is_integer(Value) -> Value;

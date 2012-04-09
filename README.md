@@ -91,6 +91,10 @@ make it setuid.
         sudo chmod 750 /usr/local/bin/procket
         sudo chmod u+s /usr/local/bin/procket
 
+  Use procket:open/2 and pass in the progname option:
+
+        procket:open(22, [{progname, "/usr/local/bin/procket"}] ++ Opt).
+
 * use Linux capabilities: beam or the user running beam can be
 given whatever socket privileges are needed. For example, using file
 capabilities:
@@ -100,7 +104,7 @@ capabilities:
     To see the capabilities:
 
         getcap /usr/local/lib/erlang/erts-5.8.3/bin/beam.smp
-    
+
     To remove the capabilities:
 
         setcap -r /usr/local/lib/erlang/erts-5.8.3/bin/beam.smp
@@ -129,7 +133,7 @@ capabilities:
 
 To build the examples:
 
-    erlc -o ebin examples/*
+    make examples
 
 ### Simple echo server
 
@@ -193,3 +197,15 @@ procket uses libancillary for passing file descriptors between processes:
 * fix link-error on SUSE platforms
 * socket notifications
 * writev support
+
+### Roman Gafiyatullin
+* support running from an OTP app and compressed bundles
+
+### Kenji Rikitake
+
+* Added ICMPv6 support (preliminary, buggy on FreeBSD localhost I/F)
+
+    Many localhost interfaces do not respond ICMP Echo Requests with
+    the proper Echo Reply code.
+
+* Tested on FreeBSD/amd64 9.0-RELEASE alc0 interface driver
